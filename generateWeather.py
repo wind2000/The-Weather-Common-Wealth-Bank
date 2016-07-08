@@ -43,7 +43,7 @@ for date in dates:
     if weatherData[station][3,currMonth-1] > 73 and noOfDaysOfRain < weatherData[station][5,currMonth-1]:
         condition = "Rain"
         noOfDaysOfRain += 1
-    output.append( station + "|" + str(geocode[station][0]) + "," + str(geocode[station][1]) + "|" + str(date) + "|" + condition + "|" + str(temperature) + "|" + str(weatherData[station][4,currMonth-1]) + "|" + str(weatherData[station][3,currMonth-1]) + "\n")
+    output.append( station + "|" + str(geocode[station][0]) + "," + str(geocode[station][1]) + "|" + str(date.strftime("%Y-%m-%dT%H:%M:%Sz")) + "|" + condition + "|" + str(temperature) + "|" + str(weatherData[station][4,currMonth-1]) + "|" + str(weatherData[station][3,currMonth-1]) + "\n")
 
 outputFile = open("weather_data",'w')
 outputFile.writelines(output)
