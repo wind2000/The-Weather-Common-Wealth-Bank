@@ -57,7 +57,7 @@ class TestWeatherStation(unittest.TestCase):
 
     def test_num_rainy_days_per_month(self):
         '''
-        Test number of rainy days generated per month should be <= Mean number of days of rain ≥ 1 mm
+        Test number of rainy days generated per month should be <= Mean number of days of rain >= 1 mm
         '''
         self.assertEqual(0, 0)
 if __name__ == '__main__':
