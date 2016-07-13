@@ -2,9 +2,6 @@ import os
 import numpy as np
 import datetime
 
-def convert_to_vapour_pressure( dewPointTemp ): # Formulae obtained from http://www.bom.gov.au/climate/austmaps/about-vprp-maps.shtml
-    return np.exp(1.8096 + (17.269425 * dewPointTemp)/(237.3 + dewPointTemp)).astype(int)
-
 def loadData(station_fname) :
     data_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'data'))
     return np.loadtxt(os.path.join(data_dir,station_fname))
@@ -38,7 +35,7 @@ def generateWeather(samples,stations,weatherstats):
         if currYear  != date.year:
             currYear = date.year
             for station in stations:
-                meanRainyDays[station[0]] = map(int, weatherstats[station[0]][5])
+                meanRainyDays[station[0]] = map(int, weatherstats[station[0]][4])
         #Select a random number from range Lowest Temperature to Highest Temperature for the selected month
         temperature = round(np.random.uniform(weatherstats[station[0]][1,currMonth-1],weatherstats[station[0]][0,currMonth-1]), 1)
         minSunnyTemp = 30 # Infered from Mean number of days = 30C row of the monthly statistics report as well as sunny days range from wikipedia.
@@ -61,10 +58,13 @@ def generateWeather(samples,stations,weatherstats):
 
         temperature_in_str = "{a}".format(a="+" if temperature > 0 else "-") + str(temperature)
 
+        atmospheric_pressure = int(np.random.uniform(800,1200)) #Atmospheric pressure can range from 800 to 1200.
+        # Data obtained from http://www.bom.gov.au/australia/charts/synoptic_col.shtml
+
         output.append( station[0] + "|" + str(station[1]) + "," + str(station[2]) + "|" +
                        str(date.strftime("%Y-%m-%dT%H:%M:%Sz")) + "|" + condition + "|" +
                        temperature_in_str
-                       + "|" + str(weatherstats[station[0]][4,currMonth-1]) + "|"
+                       + "|" + str(atmospheric_pressure) + "|"
                        + str(humidity) + "\n")
     return output
 
@@ -74,8 +74,6 @@ def main():
     weatherData = {}
     for station in stations:
         weatherData[station[0]] = loadData(station[0])
-        weatherData[station[0]][4] = np.apply_along_axis(convert_to_vapour_pressure, 0, arr=weatherData[station[0]][
-            4])  # Prepare Data.. Convert dew point temperature to vapour pressure
 
     samples = input("Enter number of samples required:")
     outputFile = open("weather_data", 'w')

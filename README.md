@@ -12,7 +12,6 @@ The script considers following data from the monthly statistics
 | Lowest temperature (°C)             |     |     |     |     |     |     |      |     |     |     |     |     |
 | Highest minimum temperature (°C)    |     |     |     |     |     |     |      |     |     |     |     |     |
 | Mean 9am relative humidity (%)      |     |     |     |     |     |     |      |     |     |     |     |     |
-| Mean 9am dew-point temperature (°C) |     |     |     |     |     |     |      |     |     |     |     |     |
 | Mean number of days of rain ≥ 1 mm  |     |     |     |     |     |     |      |     |     |     |     |     |
 
 # Data Definition
@@ -22,7 +21,6 @@ The script considers following data from the monthly statistics
 | Lowest temperature (°C)             	| The lowest (by month and overall) maximum air temperature observed at the site.                                                	| float   	|
 | Highest minimum temperature (°C)    	| The highest recorded minimum temperature observed at the site, calculated over all years of record.                            	| float   	|
 | Mean 9am relative humidity (%)      	| Approximate average relative humidity at 9am local time during a calendar month or year, calculated over the period of record. 	| integer 	|
-| Mean 9am dew-point temperature (°C) 	| Dew-point temperatures at 9 am local time during a calendar month or year, averaged over the period of record.                 	| float   	|
 | Mean number of days of rain ≥ 1 mm  	| Number of days in a calendar month or year with at least 1 mm of precipitation.                                                	| float   	|
 
 The stations file contains the list of supported stations with their geo codes.
