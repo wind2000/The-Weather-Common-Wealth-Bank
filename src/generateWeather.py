@@ -3,12 +3,6 @@ import numpy as np
 import datetime
 import utilities as util
 
-def calculate_probability_of_precipitation():
-    #PoP = C x A where "C" = the confidence that precipitation will occur somewhere in the forecast area,
-    # and where "A" = the percent of the area that will receive measureable precipitation, if it occurs at all.
-    # To be implemented
-    return 1
-
 def generateWeather(samples,stations,weatherstats):
     currMonth = -1
     currYear  = -1
@@ -45,6 +39,9 @@ def generateWeather(samples,stations,weatherstats):
         humidity = int(np.random.uniform(weatherstats[station[0]][3, currMonth - 1] - 20,
                                          weatherstats[station[0]][3, currMonth - 1] + 20))
 
+        atmospheric_pressure = int(np.random.uniform(800,1200)) #Atmospheric pressure can range from 800 to 1200.
+        # Data obtained from http://www.bom.gov.au/australia/charts/synoptic_col.shtml
+
         if temperature >= minSunnyTemp and temperature <= maxSunnyTemp:
             condition = "Sunny"
         elif temperature >= minSnowTemp and temperature <= maxSnowTemp:
@@ -52,15 +49,13 @@ def generateWeather(samples,stations,weatherstats):
         else:
             condition = "Snow"
 
-        # check for rainy day, If the relative humdity is greater than 85 it is considered as a rainy day.
-        if humidity > 85 and meanRainyDays[station[0]][currMonth - 1] > 0:
+        # check for rainy day, If the probability of precipitation is greater than 50% it is considered as a rainy day.
+        if util.calculate_probability_of_precipitation(temperature,maxSnowTemp,humidity,atmospheric_pressure) >= 0.5\
+                and meanRainyDays[station[0]][currMonth - 1] > 0:
             condition = "Rain"
             meanRainyDays[station[0]][currMonth - 1] -= 1
 
         temperature_in_str = "{a}".format(a="+" if temperature > 0 else "-") + str(temperature)
-
-        atmospheric_pressure = int(np.random.uniform(800,1200)) #Atmospheric pressure can range from 800 to 1200.
-        # Data obtained from http://www.bom.gov.au/australia/charts/synoptic_col.shtml
 
         output.append( station[0] + "|" + str(station[1]) + "," + str(station[2]) + "|" +
                        str(date.strftime("%Y-%m-%dT%H:%M:%Sz")) + "|" + condition + "|" +
